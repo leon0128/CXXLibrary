@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv)
 {
-    std::cout << LEON::bool_constant<true>::value << std::endl;
+    std::cout << LEON::true_type::value << std::endl;
 
     return 0;
 }
