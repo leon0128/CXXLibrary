@@ -49,13 +49,16 @@ namespace LEON
     // is_void (c++11)
     // 型が void 型 (cv 修飾許容) なら true_type から派生, そうでなければ false_type から派生
     template<typename T>
+    struct remove_cv;
+    template<typename T>
     struct is_void:
-        public is_void_helper<T>{};
+        public is_void_helper<typename remove_cv<T>::type>{};
 
 
     /*
     * const - volatile の変更
     */
+
     // remove_const (c++11)
     // 型の const 修飾の除去
     template<typename T>
