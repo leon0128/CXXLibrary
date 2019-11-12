@@ -1,3 +1,5 @@
+#pragma once
+
 namespace LEON
 {
     /*
@@ -39,7 +41,7 @@ namespace LEON
     */
 
     // is_void (c++11)
-    // is_void のヘルパー関数
+    // is_void のヘルパー
     template<typename>
     struct is_void_helper:
         public false_type{};
@@ -53,6 +55,14 @@ namespace LEON
     template<typename T>
     struct is_void:
         public is_void_helper<typename remove_cv<T>::type>{};
+    // is_void_t (c++17) (c++11 だと使用不可のテンプレートの為、未実装)
+    // template<typename T>
+    // inline constexpr bool is_void_t = is_void<T>::value;
+
+    // is_null_pointer (c++14)
+    // is_null_pointer のヘルパー
+    template<typename>
+    struct is_null_pointer_helper{};
 
 
     /*
