@@ -135,13 +135,21 @@ namespace LEON
     // (c++11 だと使用不可のテンプレートの為、未実装)
     
     // is_pointer (c++11)
-    // 型が ポインタ型なら true_type から派生し、そうでなければ、false_type から派生
+    // is_pointer のヘルパー
     template<typename>
-    struct is_pointer_helper
-        : public false_type{};
-    // template<typename T>
-    // struct is_pointer_helper<T*>
-    //     : 
+    struct is_pointer_helper:
+        public false_type{};
+    template<typename T>
+    struct is_pointer_helper<T*>:
+        public true_type{};
+    // is_pointer (c++11)
+    // 型が ポインタ型なら true_type から派生し、そうでなければ、false_type から派生     
+    template<typename T>
+    struct is_pointer:
+        public is_pointer_helper<typename remove_cv<T>::type>{};
+    // is_pointer_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
+    
 
     /*
     * const - volatile の変更
