@@ -58,13 +58,20 @@ namespace LEON
     struct is_void:
         public is_void_helper<typename remove_cv<T>::type>{};
     // is_void_t (c++17) (c++11 だと使用不可のテンプレートの為、未実装)
-    // template<typename T>
-    // inline constexpr bool is_void_t = is_void<T>::value;
 
     // is_null_pointer (c++14)
     // is_null_pointer のヘルパー
     template<typename>
-    struct is_null_pointer_helper{};
+    struct is_null_pointer_helper:
+        public false_type{};
+    template<>
+    struct is_null_pointer_helper<nullptr_t>:
+        public true_type{};
+    // is_null_pointer (c++14)
+    // 型が nullptr_t なら true_type から派生、 そうでなければ false_type から派生
+    template<typename T>
+    struct is_null_pointer:
+        public is_null_pointer_helper<T>{};
 
 
     /*
