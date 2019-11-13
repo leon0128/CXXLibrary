@@ -160,10 +160,21 @@ namespace LEON
         public true_type{};
     // is_lvalue_reference_v (c++17)
     // (c++11 だと 使用不可のテンプレートの為、未実装)
-
+    
     // is_rvalue_reference (c++11)
+    // 型が 右辺値参照 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename>
+    struct is_rvalue_reference:
+        public false_type{};
+    template<typename T>
+    struct is_rvalue_reference<T&&>:
+        public true_type{};
+    // is_rvalue_reference_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
 
+    // 
 
+    
     /*
     * const - volatile の変更
     */
