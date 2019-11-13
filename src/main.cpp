@@ -27,9 +27,9 @@ int main(int argc, char** argv)
     using f = void();
 
     std::cout << std::boolalpha
-              << std::is_arithmetic<int>::value << std::endl;
+              << std::is_const< const int>::value << std::endl;
     std::cout << std::boolalpha
-              << LEON::is_arithmetic<const int>::value << std::endl;
+              << LEON::is_const<const int>::value << std::endl;
     return 0;
 
 }

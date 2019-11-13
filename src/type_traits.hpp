@@ -317,6 +317,50 @@ namespace LEON
     // (c++11 だと使用不可の構文の為、未実装)
 
     /*
+    * 型の特性
+    */
+
+    // is_const (c++11)
+    // 型が const 修飾型 (volatile 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename>
+    struct is_const:
+        public false_type{};
+    template<typename T>
+    struct is_const<T const>:
+        public true_type{};
+    // is_const_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_volatile (c++11)
+    // 型が volatile 修飾型 (const 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename>
+    struct is_volatile:
+        public false_type{};
+    template<typename T>
+    struct is_volatile<T volatile>:
+        public true_type{};
+    // is_volatile_v (c++17)
+    // (c++11 では使用不可の構文の為、未実装)
+    
+    // is_trivial (c++11)
+    // 型が トリビアル型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivial:
+        public bool_constant<__is_trivial(T)>{};
+    // is_trivial_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_trivially_copyable (c++11)
+    // 型が トリビアルコピー が可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_copyable:
+        public bool_constant<__is_trivially_copyable<T>>{};
+    // is_trivially_copyable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // 
+
+    /*
     * const - volatile の変更
     */
 
