@@ -207,6 +207,30 @@ namespace LEON
     // is_member_function_v (c++11)
     // (c++11 だと使用不可の構文の為、未実装)
 
+    // is_enum (c++11)
+    // 型が 列挙型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_enum:
+        public bool_constant<__is_enum(T)>{};
+    // is_enum_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_union (c++11)
+    // 型が 共用型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_union:
+        public bool_constant<__is_union(T)>{};
+    // is_union_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_class (c++11)
+    // 型が クラス型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_class:
+        public bool_constant<__is_class(T)>{};
+    // is_class_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
     // is_function (c++11)
     // 型が関数型なら true_type から派生し、そうでなければ false_type から派生
     template<typename>
@@ -217,7 +241,7 @@ namespace LEON
         public true_type{};
     // is_function_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
-
+    
     /*
     * const - volatile の変更
     */

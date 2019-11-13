@@ -12,17 +12,24 @@ struct Str
     int x;
     int func();
 };
+enum class E
+{
+
+};
+
+union U
+{
+
+};
 
 int main(int argc, char** argv)
 {
     using f = void();
 
     std::cout << std::boolalpha
-              << LEON::is_null_pointer<const LEON::nullptr_t>::value << std::endl;
+              << std::is_union<const U>::value << std::endl;
     std::cout << std::boolalpha
-              << std::is_member_function_pointer<int (Str::*)()>::value << std::endl;
-    std::cout << std::boolalpha
-              << LEON::is_member_function_pointer<int (Str::*)()>::value << std::endl;
+              << LEON::is_union<const U>::value << std::endl;
     return 0;
 
 }
