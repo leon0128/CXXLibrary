@@ -61,13 +61,19 @@ namespace LEON
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
     // is_null_pointer (c++14)
-    // 型が nullptr_t なら true_type から派生、 そうでなければ false_type から派生
+    // is_null_pointer のヘルパー
     template<typename>
-    struct is_null_pointer:
+    struct is_null_pointer_helper:
         public false_type{};
     template<>
-    struct is_null_pointer<nullptr_t>:
+    struct is_null_pointer_helper<nullptr_t>:
         public true_type{};
+    // is_null_pointer (c++11)
+    // 型が nullptr_t なら true_type から派生、 そうでなければ false_type から派生// 
+    template<typename T>
+    struct is_null_pointer:
+        public is_null_pointer_helper<typename remove_cv<T>::type>{};
+
     // is_null_pointer_v (c++17)
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
@@ -115,7 +121,27 @@ namespace LEON
     // is_floating_point_v (c++17)
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
-    // is_array()
+    // is_array (c++11)
+    // 型が 配列型なら true_type から派生し、そうでないなら false_type から派生
+    template<typename>
+    struct is_array : public false_type{};
+    template<typename T, size_t sz>
+    struct is_array<T[sz]>: 
+        public true_type{};
+    template<typename T>
+    struct is_array<T[]>:
+        public true_type{};
+    // is_array_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
+    
+    // is_pointer (c++11)
+    // 型が ポインタ型なら true_type から派生し、そうでなければ、false_type から派生
+    template<typename>
+    struct is_pointer_helper
+        : public false_type{};
+    // template<typename T>
+    // struct is_pointer_helper<T*>
+    //     : 
 
     /*
     * const - volatile の変更
