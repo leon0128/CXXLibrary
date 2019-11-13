@@ -358,7 +358,16 @@ namespace LEON
     // is_trivially_copyable_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
     
-    // 
+    // is_standard_layout (c++11)
+    // 型が スタンダードレイアウト型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_standard_layout:
+        public bool_constant<__is_standard_layout<T>>{};
+    // is_standard_layout_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_pod (c++11)
+    
 
     /*
     * const - volatile の変更
