@@ -12,9 +12,9 @@ int main(int argc, char** argv)
     std::cout << std::boolalpha
               << LEON::is_null_pointer<const LEON::nullptr_t>::value << std::endl;
     std::cout << std::boolalpha
-              << std::is_null_pointer<const std::nullptr_t>::value << std::endl;
+              << std::is_lvalue_reference<const int&>::value << std::endl;
     std::cout << std::boolalpha
-              << std::is_pointer<const int*>::value << std::endl;
+              << std::is_lvalue_reference<const int&>::value << std::endl;
     return 0;
 
 }
