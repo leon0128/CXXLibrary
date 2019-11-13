@@ -57,7 +57,8 @@ namespace LEON
     template<typename T>
     struct is_void:
         public is_void_helper<typename remove_cv<T>::type>{};
-    // is_void_t (c++17) (c++11 だと使用不可のテンプレートの為、未実装)
+    // is_void_t (c++17) 
+    // (c++11 だと使用不可のテンプレートの為、未実装)
 
     // is_null_pointer (c++14)
     // is_null_pointer のヘルパー
@@ -72,7 +73,52 @@ namespace LEON
     template<typename T>
     struct is_null_pointer:
         public is_null_pointer_helper<T>{};
+    // is_null_pointer_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
 
+    // is_integral (c++11)
+    // is_integral のヘルパー
+    template<typename T>
+    struct is_integral_helper:
+        public false_type{};
+    template<> struct is_integral_helper<bool>               : public true_type{};
+    template<> struct is_integral_helper<char>               : public true_type{};
+    template<> struct is_integral_helper<signed char>        : public true_type{};
+    template<> struct is_integral_helper<unsigned char>      : public true_type{};
+    template<> struct is_integral_helper<char16_t>           : public true_type{};
+    template<> struct is_integral_helper<char32_t>           : public true_type{};
+    template<> struct is_integral_helper<wchar_t>            : public true_type{};
+    template<> struct is_integral_helper<signed short>       : public true_type{};
+    template<> struct is_integral_helper<unsigned short>     : public true_type{};
+    template<> struct is_integral_helper<signed int>         : public true_type{};
+    template<> struct is_integral_helper<unsigned int>       : public true_type{};
+    template<> struct is_integral_helper<signed long>        : public true_type{};
+    template<> struct is_integral_helper<unsigned long>      : public true_type{};
+    template<> struct is_integral_helper<signed long long>   : public true_type{};
+    template<> struct is_integral_helper<unsigned long long> : public true_type{};
+    // is_integral (c+11)
+    // 型が 整数型 (cv 修飾許容) なら true_type から派生、そうでなければ false_type から派生    // 
+    template<typename T>
+    struct is_integral:
+        public is_integral_helper<typename remove_cv<T>::type>{};
+    // is_integral_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
+
+    // is_floating_point (c++11)
+    // is_floating_point のヘルパー
+    template<typename>
+    struct is_floating_point_helper:
+        public false_type{};
+    template<> struct is_floating_point_helper<float>       : public true_type{};
+    template<> struct is_floating_point_helper<double>      : public true_type{};
+    template<> struct is_floating_point_helper<long double> : public true_type{};
+    // is_floating_point (c++11)
+    // 型が 浮動小数点型 (cv 修飾許容) なら true_type から派生、そうでなければ false_type から派生
+    template<typename T>
+    struct is_floating_point:
+        public is_floating_point_helper<typename remove_cv<T>::type>{};
+    // is_floating_point_v (c++17)
+    // (c++11 だと使用不可のテンプレートの為、未実装)
 
     /*
     * const - volatile の変更

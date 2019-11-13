@@ -9,7 +9,8 @@ static_assert(std::is_same<LEON::remove_cv<const volatile int>::type,
 
 int main(int argc, char** argv)
 {
-    std::cout << LEON::is_null_pointer<int>::value << std::endl;
+    std::cout << std::boolalpha
+              << LEON::is_floating_point<>::value << std::endl;
 
     return 0;
 
