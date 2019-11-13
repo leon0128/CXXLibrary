@@ -5,10 +5,12 @@
 namespace LEON
 {
     // 宣言
-    template<typename T>
+    template<typename>
     struct remove_cv;
-    template<typename T>
+    template<typename>
     struct is_function;
+    template<typename>
+    struct is_scalar;
 
     /*
     * ヘルパークラス
@@ -253,6 +255,65 @@ namespace LEON
         public bool_constant<is_lvalue_reference<T>::value ||
                              is_rvalue_reference<T>::value>{};
     // is_reference_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_arithmetic (c++11)
+    // 型が 算術型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_arithmetic:
+        public bool_constant<is_integral<T>::value ||
+                             is_floating_point<T>::value>{};
+    // is_arithmetic_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_fundamental (c++11)
+    // 型が 単純型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_fundamental:
+        public bool_constant<is_arithmetic<T>::value ||
+                             is_void<T>::value       ||
+                             is_null_pointer<T>::value>{};
+    // is_fundamental_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_object (c++11)
+    // 型が オブジェクト型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_object:
+        public bool_constant<is_scalar<T>::value ||
+                             is_array<T>::value  ||
+                             is_union<T>::value  ||
+                             is_class<T>::value>{};
+    // is_object_t (c++17)
+    // (c++11 だと使用不可の構文の為、未定義)
+
+    // is_scalar (c++11)
+    // 型が スカラ型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_scalar:
+        public bool_constant<is_arithmetic<T>::value   ||
+                             is_enum<T>::value         ||
+                             is_pointer<T>::value      ||
+                             is_null_pointer<T>::value ||
+                             is_member_object_pointer<T>::value>{};
+    // is_scalar_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_compound (c++11)
+    // 型が 複合型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_compound:
+        public bool_constant<!is_fundamental<T>::value>{};
+    // is_compound_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_member_pointer (c++11)
+    // 型が メンバポインタ型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_member_pointer:
+        public bool_constant<is_member_object_pointer<T>::value ||
+                             is_member_function_pointer<T>::value>{};
+    // is_member_pointer_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
 
     /*
