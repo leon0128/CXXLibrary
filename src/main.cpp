@@ -27,9 +27,9 @@ int main(int argc, char** argv)
     using f = void();
 
     std::cout << std::boolalpha
-              << std::is_union<const U>::value << std::endl;
+              << std::is_reference<const int&&>::value << std::endl;
     std::cout << std::boolalpha
-              << LEON::is_union<const U>::value << std::endl;
+              << LEON::is_reference<const int&&>::value << std::endl;
     return 0;
 
 }

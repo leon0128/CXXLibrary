@@ -243,6 +243,19 @@ namespace LEON
     // (c++11 だと使用不可の構文の為、未実装)
     
     /*
+    * 組み合わせた型
+    */
+
+    // is_referecne (c++11)
+    // 型が 参照型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_reference:
+        public bool_constant<is_lvalue_reference<T>::value ||
+                             is_rvalue_reference<T>::value>{};
+    // is_reference_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    /*
     * const - volatile の変更
     */
 
