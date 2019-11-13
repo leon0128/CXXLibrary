@@ -61,18 +61,13 @@ namespace LEON
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
     // is_null_pointer (c++14)
-    // is_null_pointer のヘルパー
+    // 型が nullptr_t なら true_type から派生、 そうでなければ false_type から派生
     template<typename>
-    struct is_null_pointer_helper:
+    struct is_null_pointer:
         public false_type{};
     template<>
-    struct is_null_pointer_helper<nullptr_t>:
+    struct is_null_pointer<nullptr_t>:
         public true_type{};
-    // is_null_pointer (c++14)
-    // 型が nullptr_t なら true_type から派生、 そうでなければ false_type から派生
-    template<typename T>
-    struct is_null_pointer:
-        public is_null_pointer_helper<T>{};
     // is_null_pointer_v (c++17)
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
@@ -119,6 +114,8 @@ namespace LEON
         public is_floating_point_helper<typename remove_cv<T>::type>{};
     // is_floating_point_v (c++17)
     // (c++11 だと使用不可のテンプレートの為、未実装)
+
+    // is_array()
 
     /*
     * const - volatile の変更
