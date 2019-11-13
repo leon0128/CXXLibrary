@@ -19,9 +19,9 @@ int main(int argc, char** argv)
     std::cout << std::boolalpha
               << LEON::is_null_pointer<const LEON::nullptr_t>::value << std::endl;
     std::cout << std::boolalpha
-              << std::is_function<f>::value << std::endl;
+              << std::is_member_object_pointer<const int Str::*>::value << std::endl;
     std::cout << std::boolalpha
-              << LEON::is_function<void(int)>::value << std::endl;
+              << LEON::is_member_object_pointer<const int Str::*>::value << std::endl;
     return 0;
 
 }

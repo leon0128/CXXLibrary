@@ -7,6 +7,8 @@ namespace LEON
     // 宣言
     template<typename T>
     struct remove_cv;
+    template<typename T>
+    struct is_function;
 
     /*
     * ヘルパークラス
@@ -174,8 +176,19 @@ namespace LEON
     // is_rvalue_reference_v (c++17)
     // (c++11 だと使用不可のテンプレートの為、未実装)
 
-    // 
-
+    // is_member_object_pointer (c++11)
+    // is_member_object_pointer のヘルパー
+    template<typename>
+    struct is_member_object_pointer_helper:
+        public false_type{};
+    template<typename T, typename U>
+    struct is_member_object_pointer_helper<T U::*>:
+        public bool_constant<!is_function<T>::value>{};
+    // is_member_object_pointer (c++11)
+    // 型が メンバ変数型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_member_object_pointer:
+        public is_member_object_pointer_helper<T>{};
 
     // is_function (c++11)
     // 型が関数型なら true_type から派生し、そうでなければ false_type から派生
@@ -185,6 +198,8 @@ namespace LEON
     template<typename T, typename... Args>
     struct is_function<T(Args...)>:
         public true_type{};
+    // is_function_v (c++17)
+    // (c++11 だと未対応のテンプレートの為、未実装)
 
     /*
     * const - volatile の変更
