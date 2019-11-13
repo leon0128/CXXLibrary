@@ -62,7 +62,7 @@ namespace LEON
     struct is_void:
         public is_void_helper<typename remove_cv<T>::type>{};
     // is_void_t (c++17) 
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_null_pointer (c++14)
     // is_null_pointer のヘルパー
@@ -77,9 +77,8 @@ namespace LEON
     template<typename T>
     struct is_null_pointer:
         public is_null_pointer_helper<typename remove_cv<T>::type>{};
-
     // is_null_pointer_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_integral (c++11)
     // is_integral のヘルパー
@@ -107,7 +106,7 @@ namespace LEON
     struct is_integral:
         public is_integral_helper<typename remove_cv<T>::type>{};
     // is_integral_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_floating_point (c++11)
     // is_floating_point のヘルパー
@@ -123,7 +122,7 @@ namespace LEON
     struct is_floating_point:
         public is_floating_point_helper<typename remove_cv<T>::type>{};
     // is_floating_point_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_array (c++11)
     // 型が 配列型なら true_type から派生し、そうでないなら false_type から派生
@@ -136,7 +135,7 @@ namespace LEON
     struct is_array<T[]>:
         public true_type{};
     // is_array_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
     
     // is_pointer (c++11)
     // is_pointer のヘルパー
@@ -152,7 +151,7 @@ namespace LEON
     struct is_pointer:
         public is_pointer_helper<typename remove_cv<T>::type>{};
     // is_pointer_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
     
     // is_lvalue_reference (c++11)
     // 型が 左辺値参照 なら true_type から派生、そうでなければ false_type から派生
@@ -163,7 +162,7 @@ namespace LEON
     struct is_lvalue_reference<T&>:
         public true_type{};
     // is_lvalue_reference_v (c++17)
-    // (c++11 だと 使用不可のテンプレートの為、未実装)
+    // (c++11 だと 使用不可の構文の為、未実装)
     
     // is_rvalue_reference (c++11)
     // 型が 右辺値参照 なら true_type から派生し、そうでなければ false_type から派生
@@ -174,7 +173,7 @@ namespace LEON
     struct is_rvalue_reference<T&&>:
         public true_type{};
     // is_rvalue_reference_v (c++17)
-    // (c++11 だと使用不可のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_member_object_pointer (c++11)
     // is_member_object_pointer のヘルパー
@@ -188,7 +187,25 @@ namespace LEON
     // 型が メンバ変数型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_member_object_pointer:
-        public is_member_object_pointer_helper<T>{};
+        public is_member_object_pointer_helper<typename remove_cv<T>::type>{};
+    // is_member_object_pointer_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_member_function_pointer (c++11)
+    // is_member_function_pointer のヘルパー
+    template<typename>
+    struct is_member_function_pointer_helper:
+        public false_type{};
+    template<typename T, typename U>
+    struct is_member_function_pointer_helper<T U::*>:
+        public bool_constant<is_function<T>::value>{};
+    // is_member_function (c++11)
+    // 型が メンバ関数型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_member_function_pointer:
+        public is_member_function_pointer_helper<typename remove_cv<T>::type>{};
+    // is_member_function_v (c++11)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_function (c++11)
     // 型が関数型なら true_type から派生し、そうでなければ false_type から派生
@@ -199,7 +216,7 @@ namespace LEON
     struct is_function<T(Args...)>:
         public true_type{};
     // is_function_v (c++17)
-    // (c++11 だと未対応のテンプレートの為、未実装)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     /*
     * const - volatile の変更
