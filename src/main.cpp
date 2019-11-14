@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     std::cout << std::boolalpha
               << std::is_unsigned<unsigned int>::value << std::endl;
     std::cout << std::boolalpha
-              << LEON::is_unsigned<unsigned int>::value << std::endl;
+              << LEON::is_unbounded_array<int[]>::value << std::endl;
     return 0;
 
 }

@@ -11,6 +11,8 @@ namespace LEON
     struct is_function;
     template<typename>
     struct is_scalar;
+    template<typename, unsigned = 0>
+    struct extent;
 
     /*
     * ヘルパークラス
@@ -456,8 +458,40 @@ namespace LEON
     template<typename T>
     struct is_unsigned:
         public is_unsigned_helper<T>{};
+    // is_unsigned_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_bounded_array (c++20)
+    // is_bounded_array のヘルパー
+    template<typename T>
+    struct is_bounded_array_helper:
+        public bool_constant<(extent<T>::value > 0)>{};
+    // is_bounded_array (c++20)
+    // 型が 要素数の判明している配列型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_bounded_array:
+        public is_bounded_array_helper<T>{};
+    // is_bounded_array_v (c++20)
+    // (c++11 だと使用不可の構文の為、未実装)
     
-    // 
+    // is_unbounded_array (c++20)
+    // is_unbounded_array のヘルパー
+    template<typename T>
+    struct is_unbounded_array_helper:
+        public bool_constant<is_array<T>::value && (extent<T>::value == 0)>{};
+    // is_unbounded_array (c++20)
+    // 型が 要素数の不明な配列型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_unbounded_array:
+        public is_unbounded_array_helper<T>{};
+    // is_unbounded_array_v (c++20)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_constructible (c++11)
+    // 型が コンストラクタ呼び出し が的確なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename... Args>
+    struct is_constructible:
+        public bool_constant<__is_constructible(T, Args...)>{};
 
     /*
     * 型の特性についての問い合わせ
@@ -471,11 +505,14 @@ namespace LEON
     template<typename T, unsigned U, size_t S>
     struct extent<T[S], U>:
         public integral_constant<size_t, 
-                                 (U == 0) ? S : extent<T, U - 1>::value>
-    template<typename T, typename U>
+                                 (U == 0) ? S : extent<T, U - 1>::value>{};
+    template<typename T, unsigned U>
     struct extent<T[], U>:
         public integral_constant<size_t,
-                                 (U == 0) ? 0 : extent<T, U - 1>::value>
+                                 (U == 0) ? 0 : extent<T, U - 1>::value>{};
+    // extent_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
 
     /*
     * const - volatile の変更
