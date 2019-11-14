@@ -426,6 +426,57 @@ namespace LEON
     // (c++11 では使用不可の構文の為、未実装)
     #endif
 
+    // is_signed (c++11)
+    // is_signed のヘルパー
+    template<typename T, bool = is_arithmetic<T>::value>
+    struct is_signed_helper:
+        public false_type{};
+    template<typename T>
+    struct is_signed_helper<T, true>:
+        public bool_constant<T(-1) < T(0)>{};
+    // is_signed (c++11)
+    // 型が 符号付き算術型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    // (c++14 から T が算術型出ない場合、 T(0), T(-1) でテンプレート置き換えが発生する為、ヘルパー使用)
+    template<typename T>
+    struct is_signed:
+        public is_signed_helper<T>{};
+    // is_signed_t (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_unsigned (c++11)
+    // is_unsigned のヘルパー
+    template<typename T, bool = is_arithmetic<T>::value>
+    struct is_unsigned_helper:
+        public false_type{};
+    template<typename T>
+    struct is_unsigned_helper<T, true>:
+        public bool_constant<T(0) < T(-1)>{};
+    // is_unsigned (c++11)
+    // 型が 符号なし算術型 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_unsigned:
+        public is_unsigned_helper<T>{};
+    
+    // 
+
+    /*
+    * 型の特性についての問い合わせ
+    */
+
+    // extent (c++11)
+    // 配列型の i 番目の次元の要素数を取得
+    template<typename, unsigned>
+    struct extent:
+        public integral_constant<size_t, 0>{};
+    template<typename T, unsigned U, size_t S>
+    struct extent<T[S], U>:
+        public integral_constant<size_t, 
+                                 (U == 0) ? S : extent<T, U - 1>::value>
+    template<typename T, typename U>
+    struct extent<T[], U>:
+        public integral_constant<size_t,
+                                 (U == 0) ? 0 : extent<T, U - 1>::value>
+
     /*
     * const - volatile の変更
     */

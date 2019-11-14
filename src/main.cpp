@@ -27,9 +27,9 @@ int main(int argc, char** argv)
     using f = void();
 
     std::cout << std::boolalpha
-              << std::is_aggregate<U>::value << std::endl;
+              << std::is_unsigned<unsigned int>::value << std::endl;
     std::cout << std::boolalpha
-              << LEON::is_aggregate<U>::value << std::endl;
+              << LEON::is_unsigned<unsigned int>::value << std::endl;
     return 0;
 
 }
