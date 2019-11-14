@@ -354,20 +354,77 @@ namespace LEON
     // 型が トリビアルコピー が可能なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_trivially_copyable:
-        public bool_constant<__is_trivially_copyable<T>>{};
+        public bool_constant<__is_trivially_copyable(T)>{};
     // is_trivially_copyable_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
     
     // is_standard_layout (c++11)
-    // 型が スタンダードレイアウト型 なら true_type から派生し、そうでなければ false_type から派生
+    // 型が スタンダードレイアウト型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_standard_layout:
-        public bool_constant<__is_standard_layout<T>>{};
+        public bool_constant<__is_standard_layout(T)>{};
     // is_standard_layout_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
 
     // is_pod (c++11)
+    // 型が POD型 (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_pod:
+        public bool_constant<__is_pod(T)>{};
+    // is_pod_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_literal_type (c++11)(c++17 で非推奨 c++20 で削除)
+    // 型が リテラル型 (cv 修飾許容)(配列の場合は次元を除去) なら true_type から派生し、そうでなければ false_type から派生
+    // (削除理由: 必要な情報は 定数式で初期化可能か という点の為?)
+    template<typename T>
+    struct is_literal_type:
+        public bool_constant<__is_literal_type(T)>{};
+    // is_literal_type_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_empty (c++11)
+    // 型が 空のクラス (cv 修飾許容) なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_empty:
+        public bool_constant<__is_empty(T)>{};
+    // is_empty_v (c++17)
+    // (c++17 だと使用不可の構文の為、未実装)
     
+    // is_polymorphic (c++11)
+    // 型が 多相的クラス なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_polymorphic:
+        public bool_constant<__is_polymorphic(T)>{};
+    // is_polymorphic_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_abstract (c++11)
+    // 型が 抽象クラス なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_abstract:
+        public bool_constant<__is_abstract(T)>{};
+    // is_abstract_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_final (c++14)
+    // 型が final指定 されていれば true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_final:
+        public bool_constant<__is_final(T)>{};
+    // is_final_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // __is_aggregate マクロが定義されているのは g++-7 以上
+    #if __GNUC__ >= 7
+    // is_aggregate (c++17)
+    // 型が 集成体 なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_aggregate:
+        public bool_constant<__is_aggregate(T)>{};
+    // is_aggregate_v (c++17)
+    // (c++11 では使用不可の構文の為、未実装)
+    #endif
 
     /*
     * const - volatile の変更
