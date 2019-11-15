@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cstddef.hpp"
-#include <utility>
 
 namespace LEON
 {
@@ -14,6 +13,10 @@ namespace LEON
     struct is_scalar;
     template<typename, unsigned = 0>
     struct extent;
+    template<typename>
+    struct add_rvalue_reference;
+    template<typename T>
+    typename add_rvalue_reference<T>::type declval() noexcept;
 
     /*
     * ヘルパークラス
@@ -558,4 +561,8 @@ namespace LEON
     template<typename T>
     struct add_rvalue_reference:
         public add_rvalue_reference_helper<T, (is_object<T>::value || is_function<T>::value)>{};
+    // add_rvalue_reference_t (c++14)
+    template<typename T>
+    using add_rvalue_reference_t
+        = typename add_rvalue_reference<T>::type;
 };
