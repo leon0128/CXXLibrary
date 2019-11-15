@@ -17,19 +17,21 @@ enum class E
 
 };
 
-struct U
+class U
 {
-
+public:
+    explicit U(int){}
 };
 
 int main(int argc, char** argv)
 {
-    using f = void();
+    using type = LEON::add_rvalue_reference<int>::type;
 
     std::cout << std::boolalpha
-              << std::is_unsigned<unsigned int>::value << std::endl;
-    std::cout << std::boolalpha
-              << LEON::is_unbounded_array<int[]>::value << std::endl;
+              << std::is_same<type, int&&>::value << std::endl;
+
+    // std::cout << std::boolalpha
+    //           << std::is_same
+
     return 0;
-
 }

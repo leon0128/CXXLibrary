@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cstddef.hpp"
+#include <utility>
 
 namespace LEON
 {
@@ -489,9 +490,7 @@ namespace LEON
 
     // is_constructible (c++11)
     // 型が コンストラクタ呼び出し が的確なら true_type から派生し、そうでなければ false_type から派生
-    template<typename T, typename... Args>
-    struct is_constructible:
-        public bool_constant<__is_constructible(T, Args...)>{};
+
 
     /*
     * 型の特性についての問い合わせ
@@ -512,7 +511,6 @@ namespace LEON
                                  (U == 0) ? 0 : extent<T, U - 1>::value>{};
     // extent_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
-
 
     /*
     * const - volatile の変更
@@ -543,5 +541,21 @@ namespace LEON
             = typename remove_const<typename remove_volatile<T>::type>::type;
     };
    
+    /*
+    * 参照の変更
+    */
 
+    // add_rvalue_reference (c++11)
+    // add_rvalue_reference のヘルパー
+    template<typename T, bool>
+    struct add_rvalue_reference_helper
+        {using type = T;};
+    template<typename T>
+    struct add_rvalue_reference_helper<T, true>
+        {using type = T&&;};
+    // add_rvalue_reference (c++11)
+    // 型に 右辺値参照を付与する
+    template<typename T>
+    struct add_rvalue_reference:
+        public add_rvalue_reference_helper<T, (is_object<T>::value || is_function<T>::value)>{};
 };
