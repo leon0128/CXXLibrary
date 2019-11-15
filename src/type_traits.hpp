@@ -17,6 +17,8 @@ namespace LEON
     struct add_rvalue_reference;
     template<typename T>
     typename add_rvalue_reference<T>::type declval() noexcept;
+    template<typename...>
+    using void_t = void;
 
     /*
     * ヘルパークラス
@@ -493,6 +495,12 @@ namespace LEON
 
     // is_constructible (c++11)
     // 型が コンストラクタ呼び出し が的確なら true_type から派生し、そうでなければ false_type から派生
+    template<typename, typename...>
+    struct is_constructible:
+        public false_type{};
+    template<typename T, typename... Args>
+    struct is_constructible<T, void_t<decltype(declval<T(Args...)>())>>:
+        public true_type{};
 
 
     /*
@@ -565,4 +573,13 @@ namespace LEON
     template<typename T>
     using add_rvalue_reference_t
         = typename add_rvalue_reference<T>::type;
+
+    /*
+    * その他の変換
+    */
+
+    // void_t (c++17)
+    // 0 個以上の任意の型 を void に変換
+    template<typename...>
+    using void_t = void;
 };

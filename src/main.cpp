@@ -27,6 +27,6 @@ public:
 
 int main(int argc, char** argv)
 {
-    int a = LEON::declval<int>();
+    // int a = LEON::declval<int>();
     return 0;
 }

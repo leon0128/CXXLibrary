@@ -16,7 +16,8 @@ namespace LEON
         static const bool stop = false;
         static typename add_rvalue_reference<T>::type delegate();
     };
-    // 指定された型の値を得る
+    // declval (c++11)
+    // 指定された型の値を得る (この関数は評価されてはならない)
     template<typename T>
     typename add_rvalue_reference<T>::type declval() noexcept
     {
