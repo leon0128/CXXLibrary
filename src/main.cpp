@@ -27,6 +27,9 @@ public:
 
 int main(int argc, char** argv)
 {
-    // int a = LEON::declval<int>();
+    std::cout << "type: "
+              << typeid(LEON::add_cv<const int>::type).name() << std::endl;
+            
+    
     return 0;
 }

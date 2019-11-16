@@ -493,15 +493,9 @@ namespace LEON
     // is_unbounded_array_v (c++20)
     // (c++11 だと使用不可の構文の為、未実装)
 
-    // is_constructible (c++11)
-    // 型が コンストラクタ呼び出し が的確なら true_type から派生し、そうでなければ false_type から派生
-    template<typename, typename...>
-    struct is_constructible:
-        public false_type{};
-    template<typename T, typename... Args>
-    struct is_constructible<T, void_t<decltype(declval<T(Args...)>())>>:
-        public true_type{};
-
+    /*
+    *  is_constructible から実装
+    */
 
     /*
     * 型の特性についての問い合わせ
@@ -535,6 +529,11 @@ namespace LEON
     template<typename T>
     struct remove_const<T const>
         {using type = T;};
+    // remove_const_t (c++14)
+    template<typename T>
+    using remove_const_t
+        = typename remove_const<T>::type;
+
     // remove_volatile (c++11)
     // 型の volatile 修飾の除去
     template<typename T>
@@ -543,6 +542,11 @@ namespace LEON
     template<typename T>
     struct remove_volatile<T volatile>
         {using type = T;};
+    // remove_volatile_t (c++14)
+    template<typename T>
+    using remove_volatile_t
+        = typename remove_volatile<T>::type;
+    
     // remove_cv (c++11)
     // 型の cv 修飾の除去
     template<typename T>
@@ -551,7 +555,41 @@ namespace LEON
         using type 
             = typename remove_const<typename remove_volatile<T>::type>::type;
     };
-   
+    // remove_cv_t (c++14)
+    template<typename T>
+    using remove_cv_t
+        = typename remove_cv<T>::type;
+
+    // add_const (c++11)
+    // 型に const 修飾を付与
+    template<typename T>
+    struct add_const
+        {using type = T const;};
+    // add_const_t (c++14)
+    template<typename T>
+    using add_const_t
+        = typename add_const<T>::type;
+
+    // add_volatile (c++11)
+    // 型に volatile 修飾を付与
+    template<typename T>
+    struct add_volatile
+        {using type = T volatile;};
+    // add_volatile_t (c++14)
+    template<typename T>
+    using add_volatile_t
+        = typename add_volatile<T>::type;
+
+    // add_cv (c++11)
+    // 型に cv 修飾を付与
+    template<typename T>
+    struct add_cv
+        {using type = T const volatile;};
+    // add_cv_t (c++14)
+    template<typename T>
+    using add_cv_t
+        = typename add_cv<T>::type;
+       
     /*
     * 参照の変更
     */
@@ -573,6 +611,39 @@ namespace LEON
     template<typename T>
     using add_rvalue_reference_t
         = typename add_rvalue_reference<T>::type;
+
+    /*
+    * 符号の変更
+    */
+    
+    // make_signed, make_unsigned のヘルパー
+    // const-volatile 修飾を付与する
+    
+    
+    // make_signed (c++11)
+    // make_signed_helper のヘルパー
+    template<typename T> struct make_signed_helper_helper
+        {using type = T;};
+    template<> struct make_signed_helper_helper<char>               {using type = signed char;};
+    template<> struct make_signed_helper_helper<unsigned char>      {using type = signed char;};
+    template<> struct make_signed_helper_helper<unsigned short>     {using type = signed short;};
+    template<> struct make_signed_helper_helper<unsigned int>       {using type = signed int;};
+    template<> struct make_signed_helper_helper<unsigned long>      {using type = signed long;};
+    template<> struct make_signed_helper_helper<unsigned long long> {using type = signed long long;};
+    // make_signed (c++11)
+    // make_signed のヘルパー
+    template<typename T,
+             bool IsInt  = is_integral<T>::value,
+             bool IsEnum = is_enum<T>::value>
+    struct make_signed_helper;
+    template<typename T>
+    struct make_signed_helper<T, true, false>
+    {
+        using make_signed_helper_helper_v
+            = make_signed_helper_helper<typename remove_cv<T>::type>;
+        // using 
+    };
+
 
     /*
     * その他の変換
