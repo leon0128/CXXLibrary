@@ -5,6 +5,7 @@
 namespace LEON
 {
     // 宣言
+
     template<typename>
     struct remove_cv;
     template<typename>
@@ -17,6 +18,10 @@ namespace LEON
     struct add_rvalue_reference;
     template<typename T>
     typename add_rvalue_reference<T>::type declval() noexcept;
+    template<typename>
+    struct make_unsigned;  
+    template<bool, typename, typename>
+    struct conditional;
     template<typename...>
     using void_t = void;
 
@@ -650,15 +655,22 @@ namespace LEON
     };
     // make_signed, make_unsigned のヘルパー
     // enum 型を 対応する大きさの 整数型 にする
-    template<typename T>
+    template<typename T, bool B>
     struct make_helper_convert_integral
     {
-        static const bool r0 = sizeof(T) <= sizeof(unsigned char);
-        static const bool r1 = sizeof(T) <= sizeof(unsigned short);
-        static const bool r2 = sizeof(T) <= sizeof(unsigned int);
-        static const bool r3 = sizeof(T) <= sizeof(unsigned long);
+    private:
+        static const bool b0 = sizeof(T) <= sizeof(signed char);
+        static const bool b1 = sizeof(T) <= sizeof(signed short);
+        static const bool b2 = sizeof(T) <= sizeof(signed int);
+        static const bool b3 = sizeof(T) <= sizeof(signed long);
 
-        
+        using t0 = typename conditional<b0, signed char, signed short>::type;
+        using t1 = typename conditional<b1, t0, signed int>::type;
+        using t2 = typename conditional<b2, t1, signed long>::type;
+        using t3 = typename conditional<b3, t2, signed long long>::type;
+
+    public:
+        using type = typename conditional<B, t3, typename make_unsigned<t3>::type>::type;
     };
 
     // make_signed (c++11)
@@ -695,9 +707,12 @@ namespace LEON
     struct make_signed_helper<T, false, true>
     {
     private:
-        // using make_signed_
+        using convert_integral
+            = typename make_helper_convert_integral<T, true>::type;
 
     public:
+        using type
+            = typename make_helper_align_cv<T, convert_integral>::type;
     };
     // make_signed (c++11)
     // 整数型 (列挙型) を 符号付き (cv 修飾許容) (bool 非許容) にする
@@ -734,7 +749,6 @@ namespace LEON
             = make_unsigned_helper_helper<typename remove_cv<T>::type>;
         using remove_cv_type
             = typename make_unsigned_helper_helper_struct::type;
-    
     public:
         using type
             = typename make_helper_align_cv<T, remove_cv_type>::type;
@@ -743,11 +757,13 @@ namespace LEON
     struct make_unsigned_helper<T, false, true>
     {
     private:
-    
+        using convert_integral
+            = typename make_helper_convert_integral<T, false>::type;
+
     public:
-
+        using type
+            = typename make_helper_align_cv<T, convert_integral>::type;
     };
-
     // make_unsigned (c++11)
     // 整数型 (列挙型) を 符号無し (cv 修飾許容) (bool 非許容) にする
     template<typename T>

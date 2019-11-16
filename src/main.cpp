@@ -28,10 +28,10 @@ public:
 int main(int argc, char** argv)
 {
     std::cout << "type: "
-              << typeid(LEON::make_unsigned_t<int>).name() << std::endl;
+              << typeid(std::make_unsigned<E>::type).name() << std::endl;
 
     std::cout << "type: "
-              << typeid(LEON::conditional<false, int, short>::type).name() << std::endl;
+              << typeid(LEON::make_unsigned<E>::type).name() << std::endl;
     
 
 
