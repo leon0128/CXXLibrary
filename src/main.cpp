@@ -25,6 +25,10 @@ public:
     explicit U(int){}
 };
 
+static_assert(std::is_same<LEON::add_lvalue_reference_t<int&&>,
+                           int&>::value, "hoge");
+
+
 int main(int argc, char** argv)
 {
     std::cout << "type: "

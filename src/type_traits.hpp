@@ -599,19 +599,53 @@ namespace LEON
     * 参照の変更
     */
 
+    // remove_reference (c++11)
+    // 型から 参照を除去する
+    template<typename T>
+    struct remove_reference
+        {using type = T;};
+    template<typename T>
+    struct remove_reference<T&>
+        {using type = T;};
+    template<typename T>
+    struct remove_reference<T&&>
+        {using type = T;};
+    // remove_reference_t (c++14)
+    template<typename T>
+    using remove_reference_t
+        = typename remove_reference<T>::type;
+
+    // add_lvalue_reference (c++11)
+    // add_lvalue_reference のヘルパー
+    template<typename T, bool = (is_object<T>::value || is_reference<T>::value)>
+    struct add_lvalue_reference_helper
+        {using type = T;};
+    template<typename T>
+    struct add_lvalue_reference_helper<T, true>
+        {using type = T&;};
+    // add_lvalue_reference (c++11)
+    // 型に 右辺値参照 を付与
+    template<typename T>
+    struct add_lvalue_reference:
+        public add_lvalue_reference_helper<T>{};
+    // add_lvalue_reference_t (c++14)
+    template<typename T>
+    using add_lvalue_reference_t
+        = typename add_lvalue_reference<T>::type;
+
     // add_rvalue_reference (c++11)
     // add_rvalue_reference のヘルパー
-    template<typename T, bool>
+    template<typename T, bool = (is_object<T>::value || is_reference<T>::value)>
     struct add_rvalue_reference_helper
         {using type = T;};
     template<typename T>
     struct add_rvalue_reference_helper<T, true>
         {using type = T&&;};
     // add_rvalue_reference (c++11)
-    // 型に 右辺値参照を付与する
+    // 型に 右辺値参照 を付与する
     template<typename T>
     struct add_rvalue_reference:
-        public add_rvalue_reference_helper<T, (is_object<T>::value || is_function<T>::value)>{};
+        public add_rvalue_reference_helper<T>{};
     // add_rvalue_reference_t (c++14)
     template<typename T>
     using add_rvalue_reference_t
