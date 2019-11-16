@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstddef>
 #include <utility>
+#include <limits>
 
 static_assert(std::is_same<LEON::remove_cv<const volatile int>::type,
                            int>::value, "foge");
@@ -17,6 +18,10 @@ struct Str
 enum class E
 {
 
+};
+
+struct C
+{
 };
 
 class U
@@ -37,7 +42,10 @@ int main(int argc, char** argv)
     std::cout << "type: "
               << typeid(LEON::make_unsigned<E>::type).name() << std::endl;
     
+    std::cout << "value: ";
+            //   << std::numeric_limits<C>::signaling_NaN() << std::endl;
 
+    std::numeric_limits<C>::round_error();
 
     return 0;
 }
