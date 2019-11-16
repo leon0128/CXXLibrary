@@ -617,13 +617,55 @@ namespace LEON
     */
     
     // make_signed, make_unsigned のヘルパー
-    // const-volatile 修飾を付与する
-    
-    
+    // 引数の cv 修飾 と同じ修飾を付与する
+    template<typename Src,
+             typename Dst,
+             bool = is_const<Src>::value,
+             bool = is_volatile<Dst>::value>
+    struct make_helper_align_cv
+    {
+        using type
+            = Dst;
+    };
+    template<typename Src,
+             typename Dst>
+    struct make_helper_align_cv<Src, Dst, true, false>
+    {
+        using type
+            = typename add_const<Dst>::type;
+    }; 
+    template<typename Src,
+             typename Dst>
+    struct make_helper_align_cv<Src, Dst, false, true>
+    {
+        using type
+            = typename add_volatile<Dst>::type;
+    };
+    template<typename Src,
+             typename Dst>
+    struct make_helper_align_cv<Src, Dst, true, true>
+    {
+        using type
+            = typename add_cv<Dst>::type;
+    };
+    // make_signed, make_unsigned のヘルパー
+    // enum 型を 対応する大きさの 整数型 にする
+    template<typename T>
+    struct make_helper_convert_integral
+    {
+        static const bool r0 = sizeof(T) <= sizeof(unsigned char);
+        static const bool r1 = sizeof(T) <= sizeof(unsigned short);
+        static const bool r2 = sizeof(T) <= sizeof(unsigned int);
+        static const bool r3 = sizeof(T) <= sizeof(unsigned long);
+
+        
+    };
+
     // make_signed (c++11)
     // make_signed_helper のヘルパー
     template<typename T> struct make_signed_helper_helper
         {using type = T;};
+    template<> struct make_signed_helper_helper<bool>;
     template<> struct make_signed_helper_helper<char>               {using type = signed char;};
     template<> struct make_signed_helper_helper<unsigned char>      {using type = signed char;};
     template<> struct make_signed_helper_helper<unsigned short>     {using type = signed short;};
@@ -639,15 +681,102 @@ namespace LEON
     template<typename T>
     struct make_signed_helper<T, true, false>
     {
-        using make_signed_helper_helper_v
+    private:
+        using make_signed_helper_helper_struct
             = make_signed_helper_helper<typename remove_cv<T>::type>;
-        // using 
+        using remove_cv_type
+            = typename make_signed_helper_helper_struct::type;
+    
+    public:
+        using type
+            = typename make_helper_align_cv<T, remove_cv_type>::type;
+    };
+    template<typename T>
+    struct make_signed_helper<T, false, true>
+    {
+    private:
+        // using make_signed_
+
+    public:
+    };
+    // make_signed (c++11)
+    // 整数型 (列挙型) を 符号付き (cv 修飾許容) (bool 非許容) にする
+    template<typename T>
+    struct make_signed:
+        public make_signed_helper<T>{};
+    // make_signed_t (c++14)
+    template<typename T>
+    using make_signed_t
+        = typename make_signed<T>::type;
+    
+    // make_unsigned (c++11)
+    // make_unsigned_helper のヘルパー
+    template<typename T> struct make_unsigned_helper_helper
+        {using type = T;};
+    template<> struct make_unsigned_helper_helper<bool>;
+    template<> struct make_unsigned_helper_helper<char>        {using type = unsigned char;};
+    template<> struct make_unsigned_helper_helper<signed char> {using type = unsigned char;};
+    template<> struct make_unsigned_helper_helper<short>       {using type = unsigned short;};
+    template<> struct make_unsigned_helper_helper<int>         {using type = unsigned int;};
+    template<> struct make_unsigned_helper_helper<long>        {using type = unsigned long;};
+    template<> struct make_unsigned_helper_helper<long long>   {using type = unsigned long long;};
+    // make_unsigned (c++11)
+    // make_unsigned のヘルパー
+    template<typename T,
+             bool = is_integral<T>::value,
+             bool = is_enum<T>::value>
+    struct make_unsigned_helper;
+    template<typename T>
+    struct make_unsigned_helper<T, true, false>
+    {
+    private:
+        using make_unsigned_helper_helper_struct
+            = make_unsigned_helper_helper<typename remove_cv<T>::type>;
+        using remove_cv_type
+            = typename make_unsigned_helper_helper_struct::type;
+    
+    public:
+        using type
+            = typename make_helper_align_cv<T, remove_cv_type>::type;
+    };
+    template<typename T>
+    struct make_unsigned_helper<T, false, true>
+    {
+    private:
+    
+    public:
+
     };
 
+    // make_unsigned (c++11)
+    // 整数型 (列挙型) を 符号無し (cv 修飾許容) (bool 非許容) にする
+    template<typename T>
+    struct make_unsigned:
+        public make_unsigned_helper<T>{};
+    // make_unsigned_t (c++14)
+    template<typename T>
+    using make_unsigned_t
+        = typename make_unsigned<T>::type;    
 
     /*
     * その他の変換
     */
+
+    // conditional (c++11)
+    // conditional のヘルパー
+    template<bool, typename T, typename F>
+    struct conditional_helper;
+    template<typename T, typename F>
+    struct conditional_helper<true, T, F>
+        {using type = T;};
+    template<typename T, typename F>
+    struct conditional_helper<false, T, F>
+        {using type = F;};
+    // conditional (c++11)
+    // 条件式によって 使用する型を切り替える
+    template<bool B, typename T, typename F>
+    struct conditional:
+        public conditional_helper<B, T, F>{};
 
     // void_t (c++17)
     // 0 個以上の任意の型 を void に変換
