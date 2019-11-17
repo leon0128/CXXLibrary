@@ -345,4 +345,31 @@ namespace LEON
         static constexpr int signaling_NaN() noexcept {return static_cast<int>(0);}
         static constexpr int denorm_min()    noexcept {return static_cast<int>(0);}
     };
+
+    // unsigned int の特殊化
+    template<>
+    class numeric_limits<unsigned int>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int digits      = 32;
+        static constexpr int digits10    = 9;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int radix       = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr unsigned int min()           noexcept {return 0;}
+        static constexpr unsigned int max()           noexcept {return UINT_MAX;}
+        static constexpr unsigned int lowest()        noexcept {return 0;}
+        static constexpr unsigned int epsilon()       noexcept {return 0;}
+        static constexpr unsigned int round_error()   noexcept {return 0;}
+        static constexpr unsigned int infinity()      noexcept {return static_cast<unsigned int>(0);}
+        static constexpr unsigned int quiet_NaN()     noexcept {return static_cast<unsigned int>(0);}
+        static constexpr unsigned int signaling_NaN() noexcept {return static_cast<unsigned int>(0);}
+        static constexpr unsigned int denorm_min()    noexcept {return static_cast<unsigned int>(0);}
+    };
 };
