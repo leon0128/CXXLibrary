@@ -195,10 +195,10 @@ namespace LEON
         static constexpr char lowest()        noexcept {return CHAR_MIN;}
         static constexpr char epsilon()       noexcept {return 0;}
         static constexpr char round_error()   noexcept {return 0;}
-        static constexpr char infinity()      noexcept {return char();}
-        static constexpr char quiet_NaN()     noexcept {return char();}
-        static constexpr char signaling_NaN() noexcept {return char();}
-        static constexpr char denorm_min()    noexcept {return 0;}
+        static constexpr char infinity()      noexcept {return char(0);}
+        static constexpr char quiet_NaN()     noexcept {return char(0);}
+        static constexpr char signaling_NaN() noexcept {return char(0);}
+        static constexpr char denorm_min()    noexcept {return char(0);}
     };
 
     // signed char (cv 修飾許容) の特殊化
@@ -223,9 +223,36 @@ namespace LEON
         static constexpr signed char lowest()        noexcept {return SCHAR_MIN;}
         static constexpr signed char epsilon()       noexcept {return 0;}
         static constexpr signed char round_error()   noexcept {return 0;}
-        static constexpr signed char infinity()      noexcept {return signed char();}
-        static constexpr signed char quiet_NaN()     noexcept {return signed char();}
-        static constexpr signed char signaling_NaN() noexcept {return signed char();}
-        static constexpr signed char denorm_min()    noexcept {return 0;}
+        static constexpr signed char infinity()      noexcept {return signed char(0);}
+        static constexpr signed char quiet_NaN()     noexcept {return signed char(0);}
+        static constexpr signed char signaling_NaN() noexcept {return signed char(0);}
+        static constexpr signed char denorm_min()    noexcept {return signed char(0);}
+    };
+
+    // unsigned char (cv 修飾許容) の特殊化
+    template<>
+    class numeric_limits<unsigned char>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr is_specialized = true;
+
+        static constexpr int  digits     = 8;
+        static constexpr int  digits10   = 2;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+        
+        static constexpr unsigned char min()           noexcept {return 0;}
+        static constexpr unsigned char max()           noexcept {return UCHAR_MAX;}
+        static constexpr unsigned char lowest()        noexcept {return 0;}
+        static constexpr unsigned char epsilon()       noexcept {return 0;}
+        static constexpr unsigned char round_error()   noexcept {return 0;}
+        static constexpr unsigned char infinity()      noexcept {return unsigned char(0);}
+        static constexpr unsigned char quiet_NaN()     noexcept {return unsigned char(0);}
+        static constexpr unsigned char signaling_NaN() noexcept {return unsigned char(0);}
+        static constexpr unsigned char denorm_min()    noexcept {return unsigned char(0);}
     };
 };
