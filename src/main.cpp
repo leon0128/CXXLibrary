@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     std::cout << "value: ";
             //   << std::numeric_limits<C>::signaling_NaN() << std::endl;
 
-      LEON::numeric_limits<C>::max_exponent10;
-    std::numeric_limits<char>::max_exponent10;
+      LEON::numeric_limits<C>         ::digits;
+    std::numeric_limits<unsigned char>::digits;
     return 0;
 }

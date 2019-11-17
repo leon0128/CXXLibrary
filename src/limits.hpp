@@ -181,12 +181,12 @@ namespace LEON
     public:
         static constexpr bool is_specialized = true;
 
-        static constexpr int digits      = 7;
-        static constexpr int digits10    = 2;
+        static constexpr int  digits     = (CHAR_MAX != UCHAR_MAX) ? 7 : 8;
+        static constexpr int  digits10   = 2;
         static constexpr bool is_signed  = (CHAR_MAX != UCHAR_MAX) ? true : false;
         static constexpr bool is_integer = true;
         static constexpr bool is_exact   = true;
-        static constexpr int radix       = 2;
+        static constexpr int  radix      = 2;
         static constexpr bool is_bounded = true;
         static constexpr bool traps      = true;
 
@@ -199,5 +199,33 @@ namespace LEON
         static constexpr char quiet_NaN()     noexcept {return char();}
         static constexpr char signaling_NaN() noexcept {return char();}
         static constexpr char denorm_min()    noexcept {return 0;}
+    };
+
+    // signed char (cv 修飾許容) の特殊化
+    template<>
+    class numeric_limits<signed char>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 7;
+        static constexpr int  digits10   = 2;
+        static constexpr bool is_signed  = true;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr signed char min()           noexcept {return SCHAR_MIN;}
+        static constexpr signed char max()           noexcept {return SCHAR_MAX;}
+        static constexpr signed char lowest()        noexcept {return SCHAR_MIN;}
+        static constexpr signed char epsilon()       noexcept {return 0;}
+        static constexpr signed char round_error()   noexcept {return 0;}
+        static constexpr signed char infinity()      noexcept {return signed char();}
+        static constexpr signed char quiet_NaN()     noexcept {return signed char();}
+        static constexpr signed char signaling_NaN() noexcept {return signed char();}
+        static constexpr signed char denorm_min()    noexcept {return 0;}
     };
 };
