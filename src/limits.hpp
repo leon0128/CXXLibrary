@@ -1,3 +1,9 @@
+/*
+* 以下の型の特殊化は未実装
+* char8_t, char16_t, char32_t, wchat_t,
+*/
+
+
 #pragma once
 
 #include "climits.hpp"
@@ -148,7 +154,7 @@ namespace LEON
     class numeric_limits<const volatile T>:
         public numeric_limits<T>{};
 
-    // bool (cv 修飾許容) 特殊化
+    // bool 特殊化
     template<>
     class numeric_limits<bool>:
         public numeric_limits_base
@@ -174,7 +180,7 @@ namespace LEON
         static constexpr bool denorm_min()    noexcept {return false;}
     };
 
-    // char (cv 修飾許容) 特殊化
+    // char 特殊化
     class numeric_limits<char>:
         public numeric_limits_base
     {
@@ -201,7 +207,7 @@ namespace LEON
         static constexpr char denorm_min()    noexcept {return char(0);}
     };
 
-    // signed char (cv 修飾許容) の特殊化
+    // signed char の特殊化
     template<>
     class numeric_limits<signed char>:
         public numeric_limits_base
@@ -229,7 +235,7 @@ namespace LEON
         static constexpr signed char denorm_min()    noexcept {return signed char(0);}
     };
 
-    // unsigned char (cv 修飾許容) の特殊化
+    // unsigned char の特殊化
     template<>
     class numeric_limits<unsigned char>:
         public numeric_limits_base
@@ -254,5 +260,33 @@ namespace LEON
         static constexpr unsigned char quiet_NaN()     noexcept {return unsigned char(0);}
         static constexpr unsigned char signaling_NaN() noexcept {return unsigned char(0);}
         static constexpr unsigned char denorm_min()    noexcept {return unsigned char(0);}
+    };
+
+    // short の特殊化
+    template<>
+    class numeric_limits<short>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 15;
+        static constexpr int  digits10   = 4;
+        static constexpr bool is_signed  = true;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr short min()           noexcept {return SHRT_MIN;}
+        static constexpr short max()           noexcept {return SHRT_MAX;}
+        static constexpr short lowest()        noexcept {return SHRT_MIN;}
+        static constexpr short epsilon()       noexcept {return 0;}
+        static constexpr short round_error()   noexcept {return 0;}
+        static constexpr short infinity()      noexcept {return short(0);}
+        static constexpr short quiet_NaN()     noexcept {return short(0);}
+        static constexpr short signaling_NaN() noexcept {return short(0);}
+        static constexpr short denorm_min()    noexcept {return short(0);}
     };
 };
