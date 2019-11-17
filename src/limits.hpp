@@ -1,5 +1,7 @@
 #pragma once
 
+#include "climits.hpp"
+
 namespace LEON
 {
     // float_round_style
@@ -172,4 +174,30 @@ namespace LEON
         static constexpr bool denorm_min()    noexcept {return false;}
     };
 
+    // char (cv 修飾許容) 特殊化
+    class numeric_limits<char>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int digits      = 7;
+        static constexpr int digits10    = 2;
+        static constexpr bool is_signed  = (CHAR_MAX != UCHAR_MAX) ? true : false;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int radix       = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr char min()           noexcept {return CHAR_MIN;}
+        static constexpr char max()           noexcept {return CHAR_MAX;}
+        static constexpr char lowest()        noexcept {return CHAR_MIN;}
+        static constexpr char epsilon()       noexcept {return 0;}
+        static constexpr char round_error()   noexcept {return 0;}
+        static constexpr char infinity()      noexcept {return char();}
+        static constexpr char quiet_NaN()     noexcept {return char();}
+        static constexpr char signaling_NaN() noexcept {return char();}
+        static constexpr char denorm_min()    noexcept {return 0;}
+    };
 };
