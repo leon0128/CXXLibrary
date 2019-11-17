@@ -6,7 +6,22 @@ namespace LEON
 {
     // 宣言
     template<typename>
+    struct remove_reference;
+    template<typename>
     struct add_rvalue_reference;
+
+    /*
+    * 転送と移動
+    */
+
+    // forward (c++11)
+    // 関数テンプレートの引数を転送
+    // template<typename T>
+    // T&& forward(typename )
+
+    /*
+    * 型の値
+    */
 
     // declval (c++11)
     // declval のヘルパー

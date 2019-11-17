@@ -1,8 +1,8 @@
 /*
-* 以下の型の特殊化は未実装
+* 以下の型の特殊化は後で実装
 * char8_t, char16_t, char32_t, wchat_t,
+* float, double, long double
 */
-
 
 #pragma once
 
