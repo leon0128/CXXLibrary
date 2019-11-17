@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     std::cout << "value: ";
             //   << std::numeric_limits<C>::signaling_NaN() << std::endl;
 
-      LEON::numeric_limits<C>         ::;
-    std::numeric_limits<short>        ::;
+      LEON::numeric_limits<C>         ::round_style;
+    std::numeric_limits<unsigned short>        ::round_style;
     return 0;
 }

@@ -181,6 +181,7 @@ namespace LEON
     };
 
     // char 特殊化
+    template<>
     class numeric_limits<char>:
         public numeric_limits_base
     {
@@ -201,10 +202,10 @@ namespace LEON
         static constexpr char lowest()        noexcept {return CHAR_MIN;}
         static constexpr char epsilon()       noexcept {return 0;}
         static constexpr char round_error()   noexcept {return 0;}
-        static constexpr char infinity()      noexcept {return char(0);}
-        static constexpr char quiet_NaN()     noexcept {return char(0);}
-        static constexpr char signaling_NaN() noexcept {return char(0);}
-        static constexpr char denorm_min()    noexcept {return char(0);}
+        static constexpr char infinity()      noexcept {return static_cast<char>(0);}
+        static constexpr char quiet_NaN()     noexcept {return static_cast<char>(0);}
+        static constexpr char signaling_NaN() noexcept {return static_cast<char>(0);}
+        static constexpr char denorm_min()    noexcept {return static_cast<char>(0);}
     };
 
     // signed char の特殊化
@@ -229,10 +230,10 @@ namespace LEON
         static constexpr signed char lowest()        noexcept {return SCHAR_MIN;}
         static constexpr signed char epsilon()       noexcept {return 0;}
         static constexpr signed char round_error()   noexcept {return 0;}
-        static constexpr signed char infinity()      noexcept {return signed char(0);}
-        static constexpr signed char quiet_NaN()     noexcept {return signed char(0);}
-        static constexpr signed char signaling_NaN() noexcept {return signed char(0);}
-        static constexpr signed char denorm_min()    noexcept {return signed char(0);}
+        static constexpr signed char infinity()      noexcept {return static_cast<signed char>(0);}
+        static constexpr signed char quiet_NaN()     noexcept {return static_cast<signed char>(0);}
+        static constexpr signed char signaling_NaN() noexcept {return static_cast<signed char>(0);}
+        static constexpr signed char denorm_min()    noexcept {return static_cast<signed char>(0);}
     };
 
     // unsigned char の特殊化
@@ -241,7 +242,7 @@ namespace LEON
         public numeric_limits_base
     {
     public:
-        static constexpr is_specialized = true;
+        static constexpr bool is_specialized = true;
 
         static constexpr int  digits     = 8;
         static constexpr int  digits10   = 2;
@@ -256,10 +257,10 @@ namespace LEON
         static constexpr unsigned char lowest()        noexcept {return 0;}
         static constexpr unsigned char epsilon()       noexcept {return 0;}
         static constexpr unsigned char round_error()   noexcept {return 0;}
-        static constexpr unsigned char infinity()      noexcept {return unsigned char(0);}
-        static constexpr unsigned char quiet_NaN()     noexcept {return unsigned char(0);}
-        static constexpr unsigned char signaling_NaN() noexcept {return unsigned char(0);}
-        static constexpr unsigned char denorm_min()    noexcept {return unsigned char(0);}
+        static constexpr unsigned char infinity()      noexcept {return static_cast<unsigned char>(0);}
+        static constexpr unsigned char quiet_NaN()     noexcept {return static_cast<unsigned char>(0);}
+        static constexpr unsigned char signaling_NaN() noexcept {return static_cast<unsigned char>(0);}
+        static constexpr unsigned char denorm_min()    noexcept {return static_cast<unsigned char>(0);}
     };
 
     // short の特殊化
@@ -284,9 +285,36 @@ namespace LEON
         static constexpr short lowest()        noexcept {return SHRT_MIN;}
         static constexpr short epsilon()       noexcept {return 0;}
         static constexpr short round_error()   noexcept {return 0;}
-        static constexpr short infinity()      noexcept {return short(0);}
-        static constexpr short quiet_NaN()     noexcept {return short(0);}
-        static constexpr short signaling_NaN() noexcept {return short(0);}
-        static constexpr short denorm_min()    noexcept {return short(0);}
+        static constexpr short infinity()      noexcept {return static_cast<short>(0);}
+        static constexpr short quiet_NaN()     noexcept {return static_cast<short>(0);}
+        static constexpr short signaling_NaN() noexcept {return static_cast<short>(0);}
+        static constexpr short denorm_min()    noexcept {return static_cast<short>(0);}
+    };
+
+    // unsigned short の特殊化
+    template<>
+    class numeric_limits<unsigned short>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 16;
+        static constexpr int  digits10   = 4;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr unsigned short min()           noexcept {return 0;}
+        static constexpr unsigned short max()           noexcept {return USHRT_MAX;}
+        static constexpr unsigned short lowest()        noexcept {return 0;}
+        static constexpr unsigned short epsilon()       noexcept {return 0;}
+        static constexpr unsigned short round_error()   noexcept {return 0;}
+        static constexpr unsigned short infinity()      noexcept {return static_cast<unsigned short>(0);}
+        static constexpr unsigned short quiet_NaN()     noexcept {return static_cast<unsigned short>(0);}
+        static constexpr unsigned short signaling_NaN() noexcept {return static_cast<unsigned short>(0);}
+        static constexpr unsigned short denorm_min()    noexcept {return static_cast<unsigned short>(0);}
     };
 };
