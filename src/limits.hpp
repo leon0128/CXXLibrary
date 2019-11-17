@@ -354,22 +354,132 @@ namespace LEON
     public:
         static constexpr bool is_specialized = true;
 
-        static constexpr int digits      = 32;
-        static constexpr int digits10    = 9;
+        static constexpr int  digits     = 32;
+        static constexpr int  digits10   = 9;
         static constexpr bool is_integer = true;
         static constexpr bool is_exact   = true;
-        static constexpr int radix       = 2;
+        static constexpr int  radix      = 2;
         static constexpr bool is_bounded = true;
         static constexpr bool traps      = true;
 
-        static constexpr unsigned int min()           noexcept {return 0;}
+        static constexpr unsigned int min()           noexcept {return 0u;}
         static constexpr unsigned int max()           noexcept {return UINT_MAX;}
-        static constexpr unsigned int lowest()        noexcept {return 0;}
-        static constexpr unsigned int epsilon()       noexcept {return 0;}
-        static constexpr unsigned int round_error()   noexcept {return 0;}
+        static constexpr unsigned int lowest()        noexcept {return 0u;}
+        static constexpr unsigned int epsilon()       noexcept {return 0u;}
+        static constexpr unsigned int round_error()   noexcept {return 0u;}
         static constexpr unsigned int infinity()      noexcept {return static_cast<unsigned int>(0);}
         static constexpr unsigned int quiet_NaN()     noexcept {return static_cast<unsigned int>(0);}
         static constexpr unsigned int signaling_NaN() noexcept {return static_cast<unsigned int>(0);}
         static constexpr unsigned int denorm_min()    noexcept {return static_cast<unsigned int>(0);}
+    };
+
+    // long の特殊化
+    template<>
+    class numeric_limits<long>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = (INT_MAX != LONG_MAX) ? 63 : 31;
+        static constexpr int  digits10   = (INT_MAX != LONG_MAX) ? 18 : 9;
+        static constexpr bool is_signed  = true;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr long min()           noexcept {return LONG_MIN;}
+        static constexpr long max()           noexcept {return LONG_MAX;}
+        static constexpr long lowest()        noexcept {return LONG_MIN;}
+        static constexpr long epsilon()       noexcept {return 0l;}
+        static constexpr long round_error()   noexcept {return 0l;}
+        static constexpr long infinity()      noexcept {return static_cast<long>(0);}
+        static constexpr long quiet_NaN()     noexcept {return static_cast<long>(0);}
+        static constexpr long signaling_NaN() noexcept {return static_cast<long>(0);}
+        static constexpr long denorm_min()    noexcept {return static_cast<long>(0);}
+    };
+
+    // unsigned long の特殊化
+    template<>
+    class numeric_limits<unsigned long>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = (INT_MAX != LONG_MAX) ? 64 : 32;
+        static constexpr int  digits10   = (INT_MAX != LONG_MAX) ? 19 : 9;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr unsigned long min()           noexcept {return 0ul;}
+        static constexpr unsigned long max()           noexcept {return ULONG_MAX;}
+        static constexpr unsigned long lowest()        noexcept {return 0ul;}
+        static constexpr unsigned long epsilon()       noexcept {return 0ul;}
+        static constexpr unsigned long round_error()   noexcept {return 0ul;}
+        static constexpr unsigned long infinity()      noexcept {return static_cast<unsigned long>(0);}
+        static constexpr unsigned long quiet_NaN()     noexcept {return static_cast<unsigned long>(0);}
+        static constexpr unsigned long signaling_NaN() noexcept {return static_cast<unsigned long>(0);}
+        static constexpr unsigned long denorm_min()    noexcept {return static_cast<unsigned long>(0);}
+    };
+
+    // long long の特殊化
+    template<>
+    class numeric_limits<long long>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 63;
+        static constexpr int  digits10   = 18;
+        static constexpr bool is_signed  = true;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr long long min()           noexcept {return LLONG_MIN;}
+        static constexpr long long max()           noexcept {return LLONG_MAX;}
+        static constexpr long long lowest()        noexcept {return LLONG_MIN;}
+        static constexpr long long epsilon()       noexcept {return 0ll;}
+        static constexpr long long round_error()   noexcept {return 0ll;}
+        static constexpr long long infinity()      noexcept {return static_cast<long long>(0);}
+        static constexpr long long quiet_NaN()     noexcept {return static_cast<long long>(0);}
+        static constexpr long long signaling_NaN() noexcept {return static_cast<long long>(0);}
+        static constexpr long long denorm_min()    noexcept {return static_cast<long long>(0);}
+    };
+
+    // unsigned long long の特殊化
+    template<>
+    class numeric_limits<unsigned long long>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 64;
+        static constexpr int  digits10   = 19;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr unsigned long long min()           noexcept {return 0ull;}
+        static constexpr unsigned long long max()           noexcept {return ULLONG_MAX;}
+        static constexpr unsigned long long lowest()        noexcept {return 0ull;}
+        static constexpr unsigned long long epsilon()       noexcept {return 0ull;}
+        static constexpr unsigned long long round_error()   noexcept {return 0ull;}
+        static constexpr unsigned long long infinity()      noexcept {return static_cast<unsigned long long>(0);}
+        static constexpr unsigned long long quiet_NaN()     noexcept {return static_cast<unsigned long long>(0);}
+        static constexpr unsigned long long signaling_NaN() noexcept {return static_cast<unsigned long long>(0);}
+        static constexpr unsigned long long denorm_min()    noexcept {return static_cast<unsigned long long>(0);}
     };
 };
