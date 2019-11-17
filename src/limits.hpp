@@ -102,7 +102,8 @@ namespace LEON
 
     // 特殊化されていない型
     template<typename T>
-    class numeric_limits
+    class numeric_limits:
+        public numeric_limits_base
     {
     public:
         // min (c++11)
@@ -134,6 +135,41 @@ namespace LEON
         static constexpr T denorm_min() noexcept {return T();}
     };
 
-    
-    // template<> class 
+    // cv 修飾 を許容するための特殊化
+    template<typename T>
+    class numeric_limits<const T>:
+        public numeric_limits<T>{};
+    template<typename T>
+    class numeric_limits<volatile T>:
+        public numeric_limits<T>{};
+    template<typename T>
+    class numeric_limits<const volatile T>:
+        public numeric_limits<T>{};
+
+    // bool (cv 修飾許容) 特殊化
+    template<>
+    class numeric_limits<bool>:
+        public numeric_limits_base
+    {
+    public:
+        static constexpr bool is_specialized = true;
+
+        static constexpr int  digits     = 1;
+        static constexpr bool is_integer = true;
+        static constexpr bool is_exact   = true;
+        static constexpr int  radix      = 2;
+        static constexpr bool is_bounded = true;
+        static constexpr bool traps      = true;
+
+        static constexpr bool min()           noexcept {return false;}
+        static constexpr bool max()           noexcept {return true;}
+        static constexpr bool lowest()        noexcept {return false;}
+        static constexpr bool epsilon()       noexcept {return false;}
+        static constexpr bool round_error()   noexcept {return false;}
+        static constexpr bool infinity()      noexcept {return false;}
+        static constexpr bool quiet_NaN()     noexcept {return false;}
+        static constexpr bool signaling_NaN() noexcept {return false;}
+        static constexpr bool denorm_min()    noexcept {return false;}
+    };
+
 };

@@ -1,5 +1,6 @@
 #include "type_traits.hpp"
 #include "utility.hpp"
+#include "limits.hpp"
 #include <type_traits>
 #include <typeinfo>
 #include <iostream>
@@ -45,7 +46,7 @@ int main(int argc, char** argv)
     std::cout << "value: ";
             //   << std::numeric_limits<C>::signaling_NaN() << std::endl;
 
-    std::numeric_limits<C>::round_error();
-
+      LEON::numeric_limits<const bool>::digits;
+    std::numeric_limits<bool>::round_style;
     return 0;
 }
