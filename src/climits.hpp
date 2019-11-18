@@ -37,7 +37,7 @@
 
 // INT_MIN, INT_MAX
 // int の最小値、最大値
-#define INT_MIN (-2147483648)
+#define INT_MIN (-2147483647 - 1)
 #define INT_MAX 2147483647
 
 // UINT_MAX
@@ -47,7 +47,7 @@
 // LONG_MIN, LONG_MAX, ULONG_MAX
 // long, unsigned long の最小値、最大値
 #if defined __x86_64__
-    #define  LONG_MIN (-9223372036854775808l)
+    #define  LONG_MIN (-9223372036854775807l - 1l)
     #define  LONG_MAX 9223372036854775807l
     #define ULONG_MAX 18446744073709551615ul
 #else
@@ -58,8 +58,8 @@
 
 // LLONG_MIN, LLONG_MAX (c++11)
 // long long の最小値、最大値
-#define LLONG_MIN (-9223372036854775808ll)
-#define LLONG_MAX 9223372036854775807ll
+#define LLONG_MIN (-9223372036854775807ll - 1l)
+#define LLONG_MAX 9223372036854775807ll 
 
 // ULLONG_MAX (c++11)
 // unsigned long long の最大値
