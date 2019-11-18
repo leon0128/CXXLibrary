@@ -523,10 +523,56 @@ namespace LEON
     template<typename T, typename... Args>
     struct is_constructible:
         public is_constructible_helper<T, Args...>::type{};
+    // is_constructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
     
+    // is_default_constructible (c++11)
+    // 型が デフォルト構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_default_constructible:
+        bool_constant<is_constructible<T>::value>{};
+    // is_default_constructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_copy_constructible_helper (c++11)
+    // is_copy_constructible のヘルパー
+    template<typename T,
+             bool = is_reference<T>::value ||
+                    is_object<T>::value>
+    struct is_copy_constructible_helper;
+    template<typename T>
+    struct is_copy_constructible_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_copy_constructible_helper<T, true>:
+        public is_constructible<T, const T&>{};
     // is_copy_constructible (c++11)
     // 型が コピー構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_copy_constructible:
+        public is_copy_constructible_helper<T>{};
+    // is_copy_constructible (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
 
+    // is_move_constructible (c++11)
+    // is_move_constructible のヘルパー
+    template<typename T,
+             bool = is_object<T>::value ||
+                    is_reference<T>::value>
+    struct is_move_constructible_helper;
+    template<typename T>
+    struct is_move_constructible_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_move_constructible_helper<T, true>:
+        public bool_constant<is_constructible<T, T&&>::value>{};
+    // is_move_constructible (c++11)
+    // 型が ムーブ構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_move_constructible:
+        public is_move_constructible_helper<T>{};
+    // is_move_constructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_destructible (c++11)
     // is_destructible_helper のヘルパー
