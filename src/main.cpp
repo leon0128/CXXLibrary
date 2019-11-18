@@ -10,7 +10,12 @@
 // #include <limits>
 // #include <initializer_list>
 
-static_assert(LEON::is_same<int, LEON::remove_all_extent_t<int>>::value,
+struct S
+{
+    ~S() = delete;
+};
+
+static_assert(LEON::is_destructible<S>::value,
               "false");
 
 int main(int argc, char** argv)

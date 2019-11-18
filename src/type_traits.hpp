@@ -502,6 +502,39 @@ namespace LEON
     /*
     *  is_constructible から実装
     */
+    
+    // is_destructible (c++11)
+    // is_destructible_helper のヘルパー
+    template<typename T, typename = void_t<>>
+    struct is_destructible_helper_helper:
+        public false_type{};
+    template<typename T>
+    struct is_destructible_helper_helper<T,
+                                         void_t<decltype(declval<T&>().~T())>>:
+        public true_type{};
+    // is_destructible (c++11)
+    // is_destructible のヘルパー
+    template<typename T,
+             bool = is_void<T>::value            ||
+                    is_unbounded_array<T>::value ||
+                    is_function<T>::value,
+             bool = is_reference<T>::value ||
+                    is_scalar<T>::value>
+    struct is_destructible_helper;
+    template<typename T>
+    struct is_destructible_helper<T, false, false>:
+        public is_destructible_helper_helper<T>{};
+    template<typename T>
+    struct is_destructible_helper<T, true, false>:
+        public false_type{};
+    template<typename T>
+    struct is_destructible_helper<T, false, true>:
+        public true_type{};
+    // is_destructible (c++11)
+    // 型が 破棄可能か調べる
+    template<typename T>
+    struct is_destructible:
+        public is_destructible_helper<T>{};
 
     /*
     * 型の特性についての問い合わせ
