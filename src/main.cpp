@@ -10,12 +10,7 @@
 // #include <limits>
 // #include <initializer_list>
 
-struct S
-{
-    ~S(){}
-};
-
-static_assert(LEON::is_trivially_destructible<S>::value,
+static_assert(LEON::is_constructible<int>::value,
               "false");
 
 int main(int argc, char** argv)

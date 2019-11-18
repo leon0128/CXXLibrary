@@ -500,11 +500,34 @@ namespace LEON
         public is_unbounded_array_helper<T>{};
     // is_unbounded_array_v (c++20)
     // (c++11 だと使用不可の構文の為、未実装)
-
-    /*
-    *  is_constructible から実装
-    */
     
+    // is_constructible (c++11)
+    // is_constructible_helper のヘルパー
+    struct is_constructible_helper_helper
+    {
+        template<typename T, typename... Args,
+                 typename = decltype(T(declval<Args>()...))>
+        static true_type test(int);
+
+        template<typename, typename...>
+        static false_type test(...);
+    };
+    // is_constructible (c++11)
+    // is_constructible のヘルパー
+    template<typename T, typename... Args>
+    struct is_constructible_helper:
+        public is_constructible_helper_helper
+        {using type = decltype(test<T, Args...>(0));};
+    // is_constructible (c++11)
+    // 型が がコンストラクタ呼び出し可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename... Args>
+    struct is_constructible:
+        public is_constructible_helper<T, Args...>::type{};
+    
+    // is_copy_constructible (c++11)
+    // 型が コピー構築可能なら true_type から派生し、そうでなければ false_type から派生
+
+
     // is_destructible (c++11)
     // is_destructible_helper のヘルパー
     template<typename T, typename = void_t<>>
@@ -537,6 +560,8 @@ namespace LEON
     template<typename T>
     struct is_destructible:
         public is_destructible_helper<T>{};
+    // is_destructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     // is_trivially_destructible (c++11)
     // 型が トリビアルに履き可能なら true_type から派生し、そうでなければ false_type から派生
@@ -544,6 +569,8 @@ namespace LEON
     struct is_trivially_destructible:
         public bool_constant<is_destructible<T>::value &&
                              __has_trivial_destructor(T)>{};
+    // is_trivially_destructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
 
     /*
     * 型の特性についての問い合わせ
