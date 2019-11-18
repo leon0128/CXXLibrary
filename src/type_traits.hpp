@@ -19,7 +19,9 @@ namespace LEON
     template<typename T>
     typename add_rvalue_reference<T>::type declval() noexcept;
     template<typename>
-    struct make_unsigned;  
+    struct make_unsigned;
+    template<typename>
+    struct remove_all_extent;
     template<bool, typename, typename>
     struct conditional;
     template<typename...>
@@ -523,7 +525,7 @@ namespace LEON
     struct is_destructible_helper;
     template<typename T>
     struct is_destructible_helper<T, false, false>:
-        public is_destructible_helper_helper<T>{};
+        public is_destructible_helper_helper<typename remove_all_extent<T>::type>{};
     template<typename T>
     struct is_destructible_helper<T, true, false>:
         public false_type{};
@@ -531,10 +533,17 @@ namespace LEON
     struct is_destructible_helper<T, false, true>:
         public true_type{};
     // is_destructible (c++11)
-    // 型が 破棄可能か調べる
+    // 型が 破棄可能 なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_destructible:
         public is_destructible_helper<T>{};
+
+    // is_trivially_destructible (c++11)
+    // 型が トリビアルに履き可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_destructible:
+        public bool_constant<is_destructible<T>::value &&
+                             __has_trivial_destructor(T)>{};
 
     /*
     * 型の特性についての問い合わせ

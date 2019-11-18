@@ -12,10 +12,10 @@
 
 struct S
 {
-    ~S() = delete;
+    ~S(){}
 };
 
-static_assert(LEON::is_destructible<S>::value,
+static_assert(LEON::is_trivially_destructible<S>::value,
               "false");
 
 int main(int argc, char** argv)
