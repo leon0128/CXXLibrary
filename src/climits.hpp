@@ -46,7 +46,7 @@
 
 // LONG_MIN, LONG_MAX, ULONG_MAX
 // long, unsigned long の最小値、最大値
-#if __WORDSIZE == 64
+#if defined __x86_64__
     #define  LONG_MIN (-9223372036854775808l)
     #define  LONG_MAX 9223372036854775807l
     #define ULONG_MAX 18446744073709551615ul
