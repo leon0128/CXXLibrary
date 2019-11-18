@@ -14,10 +14,14 @@ namespace LEON
     * 転送と移動
     */
 
-    // forward (c++11)
+    // forward (c++14)
     // 関数テンプレートの引数を転送
-    // template<typename T>
-    // T&& forward(typename )
+    template<typename T>
+    constexpr T&& forward(typename remove_reference<T>::type& t) noexcept
+        {return static_cast<T&&>(t);}
+    template<typename T>
+    constexpr T&& forward(typename remove_reference<T>::type& t) noexcept
+        {return static_cast<T&&>(t);}
 
     /*
     * 型の値
