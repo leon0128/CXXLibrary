@@ -142,9 +142,10 @@ namespace LEON
     // is_array (c++11)
     // 型が 配列型なら true_type から派生し、そうでないなら false_type から派生
     template<typename>
-    struct is_array : public false_type{};
-    template<typename T, size_t sz>
-    struct is_array<T[sz]>: 
+    struct is_array:
+        public false_type{};
+    template<typename T, size_t Size>
+    struct is_array<T[Size]>: 
         public true_type{};
     template<typename T>
     struct is_array<T[]>:
@@ -511,16 +512,29 @@ namespace LEON
     template<typename, unsigned>
     struct extent:
         public integral_constant<size_t, 0>{};
-    template<typename T, unsigned U, size_t S>
-    struct extent<T[S], U>:
+    template<typename T, unsigned U, size_t Size>
+    struct extent<T[Size], U>:
         public integral_constant<size_t, 
-                                 (U == 0) ? S : extent<T, U - 1>::value>{};
+                                 (U == 0) ? Size : extent<T, U - 1>::value>{};
     template<typename T, unsigned U>
     struct extent<T[], U>:
         public integral_constant<size_t,
                                  (U == 0) ? 0 : extent<T, U - 1>::value>{};
     // extent_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
+
+    /*
+    * 型の関係
+    */
+
+    // is_same (c++11)
+    // 2 つの型 が同じ型なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename U>
+    struct is_same:
+        public false_type{};
+    template<typename T>
+    struct is_same<T, T>:
+        public true_type{};
 
     /*
     * const - volatile の変更
@@ -806,7 +820,44 @@ namespace LEON
     // make_unsigned_t (c++14)
     template<typename T>
     using make_unsigned_t
-        = typename make_unsigned<T>::type;    
+        = typename make_unsigned<T>::type;
+
+    /*
+    * 配列の変更
+    */
+    
+    // remove_extent (c++11)
+    // 配列型 から次元を除去
+    template<typename T>
+    struct remove_extent
+        {using type = T;};
+    template<typename T, size_t Size>
+    struct remove_extent<T[Size]>
+        {using type = T;};
+    template<typename T>
+    struct remove_extent<T[]>
+        {using type = T;};
+    // remove_extent_t (c++14)
+    template<typename T>
+    using remove_extent_t
+        = typename remove_extent<T>::type;
+    
+    // remove_all_extent (c++11)
+    // 配列型 から全ての次元を除去
+    template<typename T>
+    struct remove_all_extent
+        {using type = T;};
+    template<typename T, size_t Size>
+    struct remove_all_extent<T[Size]>
+        {using type = typename remove_all_extent<T>::type;};
+    template<typename T>
+    struct remove_all_extent<T[]>
+        {using type = typename remove_all_extent<T>::type;};
+    // remove_all_extent_t (c++14)
+    template<typename T>
+    using remove_all_extent_t
+        = typename remove_all_extent<T>::type;
+
 
     /*
     * その他の変換

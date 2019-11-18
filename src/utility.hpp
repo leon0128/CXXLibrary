@@ -20,8 +20,14 @@ namespace LEON
     constexpr T&& forward(typename remove_reference<T>::type& t) noexcept
         {return static_cast<T&&>(t);}
     template<typename T>
-    constexpr T&& forward(typename remove_reference<T>::type& t) noexcept
+    constexpr T&& forward(typename remove_reference<T>::type&& t) noexcept
         {return static_cast<T&&>(t);}
+
+    // move (c++14)
+    // 左辺値を右辺値にキャスト
+    template<typename T>
+    constexpr typename remove_reference<T>::type&& move(T&& t) noexcept
+        {return static_cast<typename remove_reference<T>::type&&>(t);}
 
     /*
     * 型の値
