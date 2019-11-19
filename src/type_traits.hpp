@@ -574,6 +574,64 @@ namespace LEON
     // is_move_constructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
 
+    // is_assignable (c++11)
+    // is_assignable の ヘルパー
+    template<typename T, typename U,
+             typename = void_t<>>
+    struct is_assignable_helper:
+        public false_type{};
+    template<typename T, typename U>
+    struct is_assignable_helper<T, U,
+                                void_t<decltype(declval<T>() = declval<U>())>>:
+        public true_type{};
+    // is_assignable (c++11)
+    // 型 T が 型 U から代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename U>
+    struct is_assignable:
+        public is_assignable_helper<T, U>{};
+    // is_assignable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_copy_assignable (c++11)
+    // is_copy_assignable のヘルパー
+    template<typename T,
+             bool = is_reference<T>::value ||
+                    is_scalar<T>::value>
+    struct is_copy_assignable_helper;
+    template<typename T>
+    struct is_copy_assignable_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_copy_assignable_helper<T, true>:
+        public is_assignable<T&, const T&>{};
+    // is_copy_assignable (c++14) (c++11 だと 参照可能の確認を行わない)
+    // 型が コピー代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_copy_assignable:
+        public is_copy_assignable_helper<T>{};
+    // is_copy_assignable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_move_assignable (c++11)
+    // is_move_assignable のヘルパー
+    template<typename T,
+             bool = is_reference<T>::value ||
+                    is_scalar<T>::value>
+    struct is_move_assignable_helper;
+    template<typename T>
+    struct is_move_assignable_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_move_assignable_helper<T, true>:
+        public is_assignable<T&, T&&>{};
+    // is_move_assignable (c++14) (c++11 だと 参照可能の確認を行わない)
+    // 型が ムーブ代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_move_assignable:
+        public is_move_assignable_helper<T>{};
+    // is_move_assignable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
     // is_destructible (c++11)
     // is_destructible_helper のヘルパー
     template<typename T, typename = void_t<>>

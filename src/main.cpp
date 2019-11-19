@@ -10,7 +10,7 @@
 // #include <limits>
 // #include <initializer_list>
 
-static_assert(LEON::is_move_constructible<int>::value,
+static_assert(LEON::is_assignable<int&, int>::value,
               "false");
 
 int main(int argc, char** argv)
