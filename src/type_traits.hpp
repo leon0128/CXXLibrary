@@ -667,14 +667,40 @@ namespace LEON
     // is_destructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
 
+    // is_trivially_constructible (c++11)
+    // 型が トリビアルに構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename... Args>
+    struct is_trivially_constructible:
+        public bool_constant<is_constructible<T, Args...>::value &&
+                             __is_trivially_constructible(T, Args...)>{};
+    // is_trivially_constructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_default_constructible (c++11)
+    // 型が トリビアルにデフォルト構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_default_constructible:
+        public is_trivially_constructible<T>{};
+    // is_trivially_default_constructible_v (c++17)
+    // (c++11 では使用不可の構文の為、未実装)
+
     // is_trivially_destructible (c++11)
-    // 型が トリビアルに履き可能なら true_type から派生し、そうでなければ false_type から派生
+    // 型が トリビアルに破棄可能なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_trivially_destructible:
         public bool_constant<is_destructible<T>::value &&
                              __has_trivial_destructor(T)>{};
     // is_trivially_destructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_copy_constructible (c++14) (c++11 だと参照可能の確認を行わない)
+    // 型が トリビアルにコピー構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_copy_constructible:
+        public is_trivially_constructible<T, const T&>{};
+    // is_trivially_copy_constructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
 
     /*
     * 型の特性についての問い合わせ

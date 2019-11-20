@@ -10,11 +10,18 @@
 // #include <limits>
 // #include <initializer_list>
 
-static_assert(LEON::is_assignable<int&, int>::value,
-              "false");
+class CLASS
+{
+
+};
+
+using FUNC = void;
+
+static_assert(LEON::is_constructible<FUNC>::value,
+              ";ljas;jj;");
+
 
 int main(int argc, char** argv)
 {
-    std::cout << "type: " << LLONG_MIN << std::endl;
     return 0;
 }
