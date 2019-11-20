@@ -2,7 +2,7 @@
 #include "utility.hpp"
 #include "limits.hpp"
 // #include <type_traits>
-// #include <typeinfo>
+#include <typeinfo>
 #include <iostream>
 // #include <climits>
 // #include <cstddef>
@@ -17,11 +17,14 @@ class CLASS
 
 using FUNC = void;
 
-static_assert(LEON::is_constructible<FUNC>::value,
-              ";ljas;jj;");
+// static_assert(LEON::is_constructible<void>::value,
+//               ";ljas;jj;");
 
 
 int main(int argc, char** argv)
 {
+    std::cout << typeid(LEON::is_constructible<int>::value).name()
+              << std::endl;
+
     return 0;
 }
