@@ -697,13 +697,104 @@ namespace LEON
     // is_trivially_destructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
 
+    // is_trivially_copy_constructible (c++11)
+    // is_trivially_copy_constructible のヘルパ−
+    template<typename T,
+             bool = is_scalar<T>::value ||
+                    is_reference<T>::value>
+    struct is_trivially_copy_constructible_helper;
+    template<typename T>
+    struct is_trivially_copy_constructible_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_trivially_copy_constructible_helper<T, true>:
+        public is_trivially_constructible<T, const T&>{};
     // is_trivially_copy_constructible (c++14) (c++11 だと参照可能の確認を行わない)
     // 型が トリビアルにコピー構築可能なら true_type から派生し、そうでなければ false_type から派生
     template<typename T>
     struct is_trivially_copy_constructible:
-        public is_trivially_constructible<T, const T&>{};
+        public is_trivially_copy_constructible_helper<T>{};
     // is_trivially_copy_constructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
+    
+    // is_trivially_move_constructible (c++11)
+    // is_trivially_move_constructible のヘルパー
+    template<typename T,
+             bool = is_scalar<T>::value ||
+                    is_reference<T>::value>
+    struct is_trivially_move_constructible_helper;
+    template<typename T>
+    struct is_trivially_move_constructible_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_trivially_move_constructible_helper<T, true>:
+        public is_trivially_constructible<T, T&&>{};
+    // is_trivially_move_constructible (c++14) (c++11 だと参照可能の確認を行わない)
+    // 型が トリビアルにムーブ構築可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_move_constructible:
+        public is_trivially_move_constructible_helper<T>{};
+    // is_trivially_move_constructible (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_assignable (c++11)
+    // 型が トリビアルに代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T, typename U>
+    struct is_trivially_assignable:
+        public bool_constant<is_assignable<T, U>::value &&
+                             __is_trivially_assignable(T, U)>{};
+    // is_trivially_assignable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_copy_assignalbe (c++11)
+    // is_trivially_copy_assignable のヘルパー
+    template<typename T,
+             bool = is_scalar<T>::value ||
+                    is_reference<T>::value>
+    struct is_trivially_copy_assignable_helper;
+    template<typename T>
+    struct is_trivially_copy_assignable_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_trivially_copy_assignable_helper<T, true>:
+        public is_trivially_assignable<T, const T&>{};
+    // is_trivially_copy_assignalbe (c++14) (c++11 だと参照可能の確認を行わない)
+    // 型が トリビアルにコピー代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_copy_assignable:
+        public is_trivially_copy_assignable_helper<T>{};
+    // is_trivially_copy_assignable_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_move_assignable (c++11)
+    // is_trivially_move_assignalbe のヘルパー
+    template<typename T,
+             bool = is_scalar<T>::value ||
+                    is_reference<T>::value>
+    struct is_trivially_move_assignable_helper;
+    template<typename T>
+    struct is_trivially_move_assignable_helper<T, false>:
+        public false_type{};
+    template<typename T>
+    struct is_trivially_move_assignable_helper<T, true>:
+        public is_trivially_assignable<T, T&&>{};
+    // is_trivially_move_assignalbe (c++14) (c++11 だと参照可能の確認を行わない)
+    // 型が トリビアルにムーブ代入可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_move_assignable:
+        public is_trivially_move_assignable_helper<T>{};
+    // is_trivially_move_assignable (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+
+    // is_trivially_destructible (c++11)
+    // 型が トリビアルに破棄可能なら true_type から派生し、そうでなければ false_type から派生
+    template<typename T>
+    struct is_trivially_destructible:
+        public bool_constant<is_destructible<T>::value &&
+                             __has_trivial_destructor(T)>{};
+    // is_trivially_destructible_v (c++17)
+    // (c++11 だと使用不可の構文の為、未実装)
+    
     
 
     /*

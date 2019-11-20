@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 {
     std::cout << std::boolalpha
               << "value: "
-              << LEON::is_constructible<void>::value
+              << LEON::is_destructible<int()>::value
               << std::endl;
 
     return 0;
