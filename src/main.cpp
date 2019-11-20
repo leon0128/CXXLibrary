@@ -23,7 +23,9 @@ using FUNC = void;
 
 int main(int argc, char** argv)
 {
-    std::cout << typeid(LEON::is_constructible<int>::value).name()
+    std::cout << std::boolalpha
+              << "value: "
+              << LEON::is_constructible<void>::value
               << std::endl;
 
     return 0;

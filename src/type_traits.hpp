@@ -502,15 +502,33 @@ namespace LEON
     // (c++11 だと使用不可の構文の為、未実装)
     
     // is_constructible (c++11)
+    // is_constructible_helper のヘルパー
+    struct is_constructible_helper_helper
+    {
+        template<typename T, typename... Args,
+                 typename = decltype(T(declval<Args>()...))>
+        static true_type test(int);
+        template<typename, typename...>
+        static false_type test(...);
+    };
+    // is_constructible (c++11)
     // is_constructible のヘルパー
-    template<typename T, typename... Args>
+    template<typename T, bool, typename... Args>
     struct is_constructible_helper;
-
+    template<typename T, typename... Args>
+    struct is_constructible_helper<T, true, Args...>
+        {using type = false_type;};
+    template<typename T, typename... Args>
+    struct is_constructible_helper<T, false, Args...>:
+        public is_constructible_helper_helper
+        {using type = decltype(test<T, Args...>(0));};
     // is_constructible (c++17) (c++17 から 関数型 void型 は false_type から派生)
     // 型が T(Args...) で構築可能なら true_type から派生し、そうでなければ false_type から派生
     template<typename T, typename... Args>
     struct is_constructible:
-        public is_constructible_helper<T, Args...>{};
+        public is_constructible_helper<T,
+                                       (is_function<T>::value || is_void<T>::value),
+                                       Args...>::type{};
 
     // is_default_constructible (c++11)
     // 型が デフォルト構築可能なら true_type から派生し、そうでなければ false_type から派生
