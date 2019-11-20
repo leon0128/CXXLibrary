@@ -688,15 +688,6 @@ namespace LEON
     // is_trivially_default_constructible_v (c++17)
     // (c++11 では使用不可の構文の為、未実装)
 
-    // is_trivially_destructible (c++11)
-    // 型が トリビアルに破棄可能なら true_type から派生し、そうでなければ false_type から派生
-    template<typename T>
-    struct is_trivially_destructible:
-        public bool_constant<is_destructible<T>::value &&
-                             __has_trivial_destructor(T)>{};
-    // is_trivially_destructible_v (c++17)
-    // (c++11 だと使用不可の構文の為、未実装)
-
     // is_trivially_copy_constructible (c++11)
     // is_trivially_copy_constructible のヘルパ−
     template<typename T,
@@ -795,7 +786,7 @@ namespace LEON
     // is_trivially_destructible_v (c++17)
     // (c++11 だと使用不可の構文の為、未実装)
     
-    
+
 
     /*
     * 型の特性についての問い合わせ
