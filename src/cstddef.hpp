@@ -1,16 +1,16 @@
 #pragma once
 
-// コンパイラのマクロを利用して処理系定義の実装
+#include <stddef.h>
 
 namespace LEON
 {    
     // ptrdiff_t
     // ポインタの差演算の結果を表す型
-    using ptrdiff_t = __PTRDIFF_TYPE__;
+    using ptrdiff_t = ::ptrdiff_t;
 
     // size_t
     // オブジェクトのバイト数を表す型
-    using size_t = __SIZE_TYPE__;
+    using size_t = ::size_t;
 
     // nullptr_t (c++11)
     // nullptr の型
@@ -30,6 +30,8 @@ namespace LEON
     // byte (c++17)
     // byte データの別名として定義される型
     enum class byte : unsigned char{};
+
+    
 };
 
 // offsetof
